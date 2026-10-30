@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Calc 991</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,500;0,600;1,600&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{--ink:#2a2018;--parch:#e8dcc0;--dim:#b8a98a;--brass:#b08d57;--rose:#d8a2a2}
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;display:grid;place-items:center;padding:20px 0;background:radial-gradient(circle at 80% 8%,rgba(217,169,91,.14),transparent 45%),#2b211b;font-family:"EB Garamond",Garamond,Georgia,serif}
+.calc{position:relative;width:min(400px,96vw);padding:26px 18px 30px;background:linear-gradient(160deg,#2f4a3a,#1f3328);border-radius:46px 46px 58px 58px;outline:1px solid rgba(176,141,87,.22);outline-offset:-9px;box-shadow:inset 0 2px 0 rgba(255,255,255,.1),0 5px 0 #14211a,0 14px 24px rgba(0,0,0,.28)}
+h1{display:flex;align-items:center;justify-content:space-between;font:italic 600 32px/1 "EB Garamond",serif;color:var(--brass);margin:0 6px 16px}
+.br{display:flex;flex-direction:column;gap:7px}.nm{display:flex;align-items:center;gap:9px}
+.nm em{font:500 11px "DM Mono",monospace;font-style:normal;letter-spacing:.14em;color:var(--ink);background:var(--brass);padding:3px 6px;border-radius:3px}
+h1 small{font:500 11px "DM Mono",monospace;letter-spacing:.12em;color:var(--dim);font-style:normal}
+.tg{display:flex;align-items:center;gap:7px;margin-left:auto;height:28px;padding:0 10px;border-radius:14px;font:500 13px "DM Mono",monospace;color:var(--dim);background:#1a120d;box-shadow:inset 0 0 0 1px rgba(176,141,87,.5),inset 0 2px 4px rgba(0,0,0,.6)}
+.tg i{position:relative;width:28px;height:14px;border-radius:7px;background:#3a2c22}
+.tg i::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:var(--dim);transition:transform .15s}
+.tg.on{color:var(--brass)}.tg.on i{background:var(--brass)}.tg.on i::after{transform:translateX(14px);background:var(--ink)}
+.tg:active{transform:none;box-shadow:inset 0 0 0 1px rgba(176,141,87,.5),inset 0 2px 4px rgba(0,0,0,.6)}
+.lcd{background:#d6cba8 repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 1px,transparent 1px 3px);border-radius:18px;padding:10px 16px 10px;height:138px;display:flex;flex-direction:column;box-shadow:inset 0 6px 12px rgba(0,0,0,.45),inset 0 0 0 3px #6a5d3d,0 1px 0 rgba(255,255,255,.12),0 0 0 4px #16261d;color:var(--ink);margin:0 4px 26px;font-family:"DM Mono",monospace}
+.st{height:14px;font-size:11px;font-weight:500;display:flex;gap:8px;color:#2a2018}
+.ex{flex:1;font-size:23px;line-height:1.3;white-space:nowrap;overflow:hidden}
+.cur{display:inline-block;width:2px;height:1.1em;background:var(--ink);vertical-align:text-bottom;animation:b 1s steps(2) infinite}
+@keyframes b{50%{opacity:0}}
+.rs{height:38px;text-align:right;font-size:28px;font-weight:500;white-space:nowrap;overflow:hidden}
+.rs.err{font-size:17px;color:#6e2a2e;line-height:38px}
+.row{display:grid;gap:8px;margin-bottom:5px}
+.c{display:flex;flex-direction:column;min-width:0}
+.lb{display:flex;justify-content:space-between;font:500 9px "DM Mono",monospace;height:19px;align-items:flex-end;padding:0 3px 5px;white-space:nowrap}
+.lb .s{color:#d3b277}.lb .a{color:var(--rose)}
+button{height:36px;border:none;border-radius:10px;cursor:pointer;font:600 14px "EB Garamond",Georgia,serif;color:var(--parch);background:linear-gradient(#456a56,#34523f);box-shadow:0 3px 0 #14241a,0 4px 5px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .05s,box-shadow .05s}
+button:active{transform:translateY(3px);box-shadow:0 1px 2px rgba(0,0,0,.5)}
+.row.n button{height:46px;font-size:20px;border-radius:10px}
+.row.n{margin-bottom:5px}
+button.n{color:var(--ink);background:linear-gradient(#f3e9cf,#d9ccaa);box-shadow:0 3px 0 #8f7f5c,0 4px 5px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.8)}
+button.o{background:linear-gradient(#8a3338,#6e2a2e);box-shadow:0 3px 0 #3e1517,0 4px 5px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.3)}
+button.d{background:linear-gradient(#4a372b,#33241b);box-shadow:0 3px 0 #120b07,0 4px 5px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.22)}
+button.y{color:var(--ink);background:linear-gradient(#d3b277,var(--brass));box-shadow:0 3px 0 #6e5630,0 4px 5px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.5)}
+button.b{background:linear-gradient(#34261d,#1c130e);box-shadow:0 3px 0 #0e0906,0 4px 5px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.24),inset 0 0 0 1px rgba(176,141,87,.6);font-size:12px;letter-spacing:.08em}
+button.b.on{background:var(--brass);color:var(--ink)}
+button.b.al.on{background:var(--rose)}
+.ov{display:none;position:absolute;left:18px;right:18px;top:156px;bottom:30px;background:#efe4c8;color:var(--ink);overflow:auto;padding:10px;font:11px "DM Mono",monospace;grid-template-columns:repeat(4,1fr);gap:3px 8px;box-shadow:0 10px 30px rgba(0,0,0,.65);border-radius:16px}
+.ov.on{display:grid}.ov b{color:#6e2a2e}
+.hp{display:none;position:absolute;left:18px;right:18px;bottom:30px;flex-direction:column;gap:3px;background:#efe4c8;color:var(--ink);overflow:auto;padding:10px;font:12px "DM Mono",monospace;box-shadow:0 10px 30px rgba(0,0,0,.65);border-radius:16px}
+.hp.on{display:flex}
+.hp h2{display:flex;justify-content:space-between;align-items:center;font:italic 600 17px "EB Garamond",serif;color:#6e2a2e;margin:0 2px 6px}
+.hp p{padding:18px 6px;text-align:center;opacity:.6}
+.hp button{height:auto;padding:7px 9px;border-radius:8px;color:var(--ink);background:rgba(42,32,24,.07);box-shadow:none;font:13px "DM Mono",monospace;text-align:left;display:flex;justify-content:space-between;gap:12px;transition:none}
+.hp button:hover{background:rgba(42,32,24,.14)}.hp button:active{transform:none;box-shadow:none}
+.hp button.hc{font:600 11px "DM Mono",monospace;color:#6e2a2e;padding:4px 9px;background:rgba(110,42,46,.12)}
+.hp button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hp button b{white-space:nowrap;color:#6e2a2e;font-weight:500}
+.dp{position:relative}.dp::before{content:"";position:absolute;left:50%;top:39px;width:88px;height:88px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#2c4637,#1a2a21);box-shadow:inset 0 2px 5px rgba(0,0,0,.6),0 0 0 1px rgba(176,141,87,.45)}
+.dp button{position:absolute;width:30px;height:30px;padding:0;border-radius:50%;font-size:13px;letter-spacing:0;background:linear-gradient(#4a372b,#33241b);box-shadow:0 3px 0 #120b07,0 4px 5px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.24)}
+.dp .u,.dp .v{left:50%;margin-left:-15px}.dp .u{top:-3px}.dp .v{top:51px}.dp .l,.dp .r{top:24px}.dp .l{left:4px}.dp .r{right:4px}
+button.sh,button.al,button.rd{width:40px;height:40px;margin:0 auto;padding:0;border-radius:50%;font-size:10px;letter-spacing:0}
+</style></head><body>
+<main class="calc"><h1><span class="br"><span class="nm">Calc<em>991</em></span><small>NATURAL SCIENTIFIC</small></span><button id="snd" class="tg" role="switch" aria-checked="false" aria-label="Typing sound" title="Typing sound">♪<i></i></button></h1>
+<section class="lcd"><div class="st" id="st"></div><div class="ex" id="ex"></div><div class="rs" id="rs"></div></section>
+<div id="pad"></div><div class="ov" id="ov"></div><div class="hp" id="hp"></div></main>
+<script>
+const $=id=>document.getElementById(id);
+const V={A:0,B:0,C:0,D:0,E:0,F:0,X:0,Y:0,M:0,Ans:0};
+let ex="",pos=0,sh=0,al=0,mode="Deg",ov=0,fresh=0,res=null,lab="",msg="",dec=0,mixed=0,engK=null,pend=null,cb="",hyp=0,pm=null,hist=[],hi=-1;
+const FN=["sinh⁻¹(","cosh⁻¹(","tanh⁻¹(","sin⁻¹(","cos⁻¹(","tan⁻¹(","sinh(","cosh(","tanh(","sin(","cos(","tan(","log(","logₐ(","ln(","³√(","√(","Abs(","e^(","10^(","∫(","d/dx(","Σ(","Pol(","Rec(","RanInt(","Rnd("];
+const WD=["Ans","Ran#","nPr","nCr","⁻¹","ʸ√"],ALL=[...FN,...WD],VARS="ABCDEFXYM";
+const C=[["mp",1.672621777e-27],["mn",1.674927351e-27],["me",9.10938291e-31],["mμ",1.883531475e-28],["a0",5.2917721092e-11],["h",6.62606957e-34],["μN",5.05078353e-27],["μB",9.27400968e-24],["ħ",1.054571726e-34],["α",7.2973525698e-3],["re",2.8179403267e-15],["λc",2.4263102389e-12],["γp",2.675222005e8],["λcp",1.32140985623e-15],["λcn",1.31959090468e-15],["R∞",10973731.568539],["u",1.660538921e-27],["μp",1.410606743e-26],["μe",-9.2847643e-24],["μn",-9.6623647e-27],["μμ",-4.49044807e-26],["F",96485.3365],["e",1.602176565e-19],["NA",6.02214129e23],["k",1.3806488e-23],["Vm",2.2710953e-2],["R",8.3144621],["C0",299792458],["C1",3.74177153e-16],["C2",1.438777e-2],["σ",5.670373e-8],["ε0",8.854187817e-12],["μ0",1.256637061e-6],["φ0",2.067833758e-15],["g",9.80665],["G0",7.7480917346e-5],["Z0",376.730313461],["t",273.15],["G",6.67384e-11],["atm",101325]];
+const toE=v=>String(v).replace(/e\+?(-?\d+)/,"×10^($1)").replace(/-/g,"−");
+// ---------- maths ----------
+const ok=v=>{if(typeof v!=="number"||!isFinite(v))throw 1;return v};
+const z=v=>Math.abs(v)<1e-14?0:v;
+function fact(n){if(!Number.isInteger(n)||n<0||n>69)throw 1;let r=1;for(let i=2;i<=n;i++)r*=i;return r}
+const T={"sin(":(x,k)=>z(Math.sin(x*k)),"cos(":(x,k)=>z(Math.cos(x*k)),"tan(":(x,k)=>{if(Math.abs(Math.cos(x*k))<1e-12)throw 1;return z(Math.tan(x*k))},
+"sin⁻¹(":(x,k)=>Math.asin(x)/k,"cos⁻¹(":(x,k)=>Math.acos(x)/k,"tan⁻¹(":(x,k)=>Math.atan(x)/k,
+"sinh(":Math.sinh,"cosh(":Math.cosh,"tanh(":Math.tanh,"sinh⁻¹(":Math.asinh,"cosh⁻¹(":Math.acosh,"tanh⁻¹(":Math.atanh,
+"log(":Math.log10,"ln(":Math.log,"√(":Math.sqrt,"³√(":Math.cbrt,"Abs(":Math.abs,"e^(":Math.exp,"10^(":x=>10**x,"Rnd(":x=>+x.toPrecision(10)};
+const M2={"logₐ(":(a,b)=>Math.log(b)/Math.log(a),"Pol(":(x,y,k)=>{V.Y=Math.atan2(y,x)/k;return Math.hypot(x,y)},
+"Rec(":(r,t,k)=>{V.Y=r*Math.sin(t*k);return r*Math.cos(t*k)},"RanInt(":(a,b)=>a+Math.floor(Math.random()*(b-a+1))};
+function asr(f,a,b,e,w,fa,fm,fb,d){const m=(a+b)/2,lm=(a+m)/2,rm=(m+b)/2,fl=f(lm),fr=f(rm),l=(m-a)/6*(fa+4*fl+fm),r=(b-m)/6*(fm+4*fr+fb);
+ if(d<=0||Math.abs(l+r-w)<=15*e)return l+r+(l+r-w)/15;return asr(f,a,m,e/2,l,fa,fl,fm,d-1)+asr(f,m,b,e/2,r,fm,fr,fb,d-1)}
+function integ(f,a,b){if(a===b)return 0;const fa=f(a),fb=f(b),fm=f((a+b)/2);return asr(f,a,b,1e-10,(b-a)/6*(fa+4*fm+fb),fa,fm,fb,40)}
+const tok=s=>{const t=[];for(let i=0;i<s.length;){const r=s.slice(i),m=r.match(/^(\d+\.?\d*|\.\d+)/);
+ if(m){t.push({n:parseFloat(m[1])});i+=m[1].length;continue}
+ const f=ALL.find(x=>r.startsWith(x));if(f){t.push({f});i+=f.length;continue}t.push({c:r[0]});i++}return t};
+function parse(s){const t=tok(s);let p=0;
+ const isC=c=>t[p]&&t[p].c===c,isF=f=>t[p]&&t[p].f===f;
+ const K=()=>mode==="Deg"?Math.PI/180:mode==="Gra"?Math.PI/200:1,U=()=>mode==="Deg"?1:mode==="Gra"?10/9:Math.PI/180;
+ const g=f=>x=>{const o=V.X;V.X=x;try{return f()}finally{V.X=o}};
+ const startP=()=>{const x=t[p];return x&&(x.n!==undefined||(x.f&&(x.f.endsWith("(")||x.f==="Ans"||x.f==="Ran#"))||(x.c&&"(πeABCDEFXYM".includes(x.c)))};
+ function expr(){let a=term();while(isC("+")||isC("−")){const o=t[p++].c,b=term(),l=a;a=o==="+"?()=>l()+b():()=>l()-b()}return a}
+ function term(){let a=perm();for(;;){let o=null;if(isC("×")||isC("÷"))o=t[p++].c;else break;
+  const l=a,b=perm();a=o==="÷"||o==="⁄"?()=>{const d=b();if(d===0)throw 1;return l()/d}:()=>l()*b()}return a}
+ function imp(){let a=fr();while(startP()){const l=a,b=fr();a=()=>l()*b()}return a}
+ function fr(){let a=un();while(isC("⁄")){p++;const l=a,b=un();a=()=>{const d=b();if(d===0)throw 1;return l()/d}}return a}
+ function perm(){let a=imp();while(isF("nPr")||isF("nCr")){const o=t[p++].f,l=a,b=imp();
+  a=()=>{const n=l(),r=b();if(!Number.isInteger(n)||!Number.isInteger(r)||r<0||r>n)throw 1;let v=1;for(let i=0;i<r;i++)v*=n-i;return o==="nPr"?v:v/fact(r)}}return a}
+ function un(){if(isC("−")){p++;const u=un();return()=>-u()}if(isC("+")){p++;return un()}return pw()}
+ function pw(){const b=po();if(isC("^")){p++;const e=un();return()=>Math.pow(b(),e())}
+  if(isF("ʸ√")){p++;const e=un();return()=>Math.pow(e(),1/b())}return b}
+ function po(){let a=atom();for(;;){const l=a;
+  if(isC("!")){p++;a=()=>fact(l())}else if(isC("%")){p++;a=()=>l()/100}else if(isC("²")){p++;a=()=>l()**2}
+  else if(isC("³")){p++;a=()=>l()**3}else if(isF("⁻¹")){p++;a=()=>{const d=l();if(d===0)throw 1;return 1/d}}else break}return a}
+ function call(f,a){
+  if(f==="∫(")return()=>integ(g(a[0]),a[1](),a[2]());
+  if(f==="d/dx(")return()=>{const F=g(a[0]),x=a[1](),h=1e-3*Math.max(1,Math.abs(x));return(8*(F(x+h)-F(x-h))-(F(x+2*h)-F(x-2*h)))/(12*h)};
+  if(f==="Σ(")return()=>{const F=g(a[0]);let s=0;const lo=a[1](),hi=a[2]();for(let i=lo;i<=hi;i++)s+=F(i);return s};
+  if(M2[f])return()=>ok(M2[f](a[0](),a[1](),K()));
+  return()=>ok(T[f](a[0](),K()))}
+ function atom(){const x=t[p++];if(!x)throw 2;
+  if(x.n!==undefined){let d=x.n;if(isC("°")){p++;if(t[p]&&t[p].n!==undefined&&t[p+1]&&t[p+1].c==="′"){d+=t[p].n/60;p+=2}return()=>d*U()}return()=>d}
+  if(x.f==="Ans")return()=>V.Ans;if(x.f==="Ran#")return()=>+Math.random().toFixed(3);
+  if(x.f&&x.f.endsWith("(")){const a=[expr()];while(isC(",")){p++;a.push(expr())}if(isC(")"))p++;return call(x.f,a)}
+  if(x.c==="("){const a=expr();if(isC(")"))p++;return a}
+  if(x.c==="π")return()=>Math.PI;if(x.c==="e")return()=>Math.E;
+  if(x.c&&VARS.includes(x.c))return()=>V[x.c];
+  throw 2}
+ const f=expr();if(p<t.length)throw 2;return f}
+const run=s=>ok(parse(s)());
+// ---------- display formats ----------
+const dpl=v=>{let s=String(+v.toPrecision(10));if(/e/.test(s))s=s.replace(/e\+?(-?\d+)/,"×10^($1)");return s.replace(/-/g,"−")};
+function frac(x,md){let h1=1,h0=0,k1=0,k0=1,b=x;for(let i=0;i<30;i++){const a=Math.floor(b);[h1,h0]=[a*h1+h0,h1];[k1,k0]=[a*k1+k0,k1];
+ if(Math.abs(x-h1/k1)<1e-11)return[h1,k1];if(k1>md)return null;b=1/(b-a);if(!isFinite(b))return null}return null}
+function exact(v){if(Number.isInteger(v)||!isFinite(v)||Math.abs(v)<1e-9||Math.abs(v)>1e5||Math.abs(v-Math.round(v))<1e-9)return null;const s=v<0?"−":"",x=Math.abs(v);
+ let f=frac(x,10000);
+ if(f&&f[1]>1){const[n,d]=f;return mixed&&n>d?`${s}${Math.floor(n/d)} ${n%d}⁄${d}`:`${s}${n}⁄${d}`}
+ f=frac(x/Math.PI,1000);if(f&&f[1]<=100&&f[0]<=1000)return`${s}${f[0]>1?f[0]:""}π${f[1]>1?"⁄"+f[1]:""}`;
+ const q=frac(x*x,10000);if(q&&q[1]<=100){const n=q[0]*q[1],d=q[1];let k=1;for(let i=2;i*i<=n;i++)if(n%(i*i)===0)k=i;
+  const r=n/(k*k);if(r<2)return null;return`${s}${k>1?k:""}√${r}${d>1?"⁄"+d:""}`.replace(/√(\d+)⁄(\d+)/,"√$1⁄$2")}
+ return null}
+// ---------- editing ----------
+const START=["+","−","×","÷","^","²","³","⁻¹","⁄","nPr","nCr","!","%","ʸ√"];
+function ins(s){
+ if(hyp&&/^(sin|cos|tan)/.test(s)){s=s.replace(/^(sin|cos|tan)/,"$1h");hyp=0}
+ if(fresh){ex=START.some(o=>s.startsWith(o))?"Ans":"";pos=ex.length;fresh=0;res=null;lab=""}
+ if(ov&&pos<ex.length)ex=ex.slice(0,pos)+ex.slice(pos+1);
+ ex=ex.slice(0,pos)+s+ex.slice(pos);pos+=s.length}
+const edit=()=>{if(fresh){fresh=0;res=null;lab=""}};
+const cur=()=>res!==null?res:run(ex);
+const A={
+ shift(){sh=!sh;al=0},alpha(){al=!al;sh=0},
+ left(){edit();const f=ALL.find(x=>ex.slice(0,pos).endsWith(x));pos=Math.max(0,pos-(f?f.length:1))},
+ right(){edit();const f=ALL.find(x=>ex.slice(pos).startsWith(x));pos=Math.min(ex.length,pos+(f?f.length:1))},
+ up(){if(!hist.length)return;hi=Math.min(hi+1,hist.length-1);ex=hist[hi];pos=ex.length;fresh=0;res=null;lab=""},
+ down(){if(hi<0)return;hi--;ex=hi>=0?hist[hi]:"";pos=ex.length;fresh=0;res=null;lab=""},
+ del(){edit();const f=ALL.find(x=>ex.slice(0,pos).endsWith(x)),n=f?f.length:1;if(pos===0)return;ex=ex.slice(0,pos-n)+ex.slice(pos);pos-=n},
+ ins(){ov=!ov},
+ ac(){ex="";pos=0;res=null;lab="";fresh=0;pm=null;hyp=0;pend=null;cb="";engK=null;msg=""},
+ on(){Object.keys(V).forEach(k=>V[k]=0);hist=[];mode="Deg";A.ac()},
+ clr(){["A","B","C","D","E","F","X","Y","M"].forEach(k=>V[k]=0);A.ac();msg="Memory cleared"},
+ drg(){mode={Deg:"Rad",Rad:"Gra",Gra:"Deg"}[mode]},
+ hyp(){hyp=!hyp},sto(){pend="sto"},rcl(){pend="rcl"},
+ const(){pend="const";cb=""},
+ sd(){if(res!==null){dec=!dec;engK=null}},mixed(){mixed=!mixed},
+ eng(){if(res===null||!res)return;engK=engK===null?Math.floor(Math.log10(Math.abs(res))/3):engK+1},
+ engb(){if(res===null||!res)return;engK=(engK===null?Math.floor(Math.log10(Math.abs(res))/3):engK)-1},
+ mplus(){try{V.M+=cur()}catch{msg="Math ERROR"}},mminus(){try{V.M-=cur()}catch{msg="Math ERROR"}},
+ eq(){if(pm)return pmNext();if(!ex)return;engK=null;dec=0;
+  try{const v=run(ex);V.Ans=v;res=v;lab="";hist.unshift(ex);hist=hist.slice(0,30);hi=-1;fresh=1}catch(e){msg=e===1?"Math ERROR":"Syntax ERROR";res=null}},
+ calc(){if(!ex||pm)return;const n=[...new Set(tok(ex).filter(x=>x.c&&VARS.includes(x.c)).map(x=>x.c))];
+  if(!n.length)return ex.includes("=")?(msg="Syntax ERROR"):A.eq();pm={vars:n,i:0,src:ex,solve:0};ex="";pos=0;res=null},
+ solve(){if(!ex.includes("=")){msg="Syntax ERROR";return}pm={vars:["X"],i:0,src:ex,solve:1};ex="";pos=0;res=null}
+};
+function pmNext(){const n=pm.vars[pm.i];try{if(ex)V[n]=run(ex)}catch{msg="Syntax ERROR";return}
+ pm.i++;ex="";pos=0;if(pm.i<pm.vars.length)return;
+ const s=pm.src,sv=pm.solve;pm=null;ex=s;pos=s.length;sv?doSolve():A.eq()}
+function doSolve(){const[l,r]=ex.split("=");
+ try{const L=parse(l),R=parse(r||"0"),g=x=>{V.X=x;return L()-R()};let x=V.X,f=0;
+  for(let i=0;i<80;i++){const y=g(x);if(Math.abs(y)<1e-11){f=1;break}const h=1e-6*Math.max(1,Math.abs(x)),d=(g(x+h)-g(x-h))/(2*h);
+   if(!isFinite(d)||d===0){x+=.5;continue}x-=y/d;if(!isFinite(x))break}
+  if(!f){let pv=g(-1e3);for(let i=1;i<=4000&&!f;i++){const xi=-1e3+i*.5,yi=g(xi);
+   if(isFinite(pv)&&isFinite(yi)&&pv*yi<=0){let a=xi-.5,b=xi;for(let j=0;j<200;j++){const m=(a+b)/2;if(g(a)*g(m)<=0)b=m;else a=m}x=(a+b)/2;f=1}pv=yi}}
+  if(!f||!isFinite(x)||Math.abs(g(x))>1e-6)throw 1;
+  x=+x.toPrecision(12);V.X=x;V.Ans=x;res=x;lab="X=";fresh=1;engK=null;dec=0;hist.unshift(ex)}
+ catch{msg="Can't Solve"}}
+// ---------- keys ----------
+const K=(l,a,sl,sa,al,aa,c,g)=>({l,a,sl,sa,al,aa,c,g});
+const ROWS=[
+[K("SHIFT","@shift",0,0,0,0,"b sh","1/1"),K("ALPHA","@alpha",0,0,0,0,"b al","1/2"),K("DPAD","",0,0,0,0,"","1/3/3/4"),K("HIST","@hist",0,0,0,0,"b rd","1/4"),K("ON","@on",0,0,0,0,"b rd","1/5"),K("CALC","@calc","SOLVE","@solve","=","=","","2/1"),K("∫▫","∫(","d/dx","d/dx(",0,0,"","2/2"),K("x⁻¹","⁻¹","x!","!",0,0,"","2/4"),K("logₐb","logₐ(","Σ","Σ(",0,0,"","2/5")],
+
+[K("▯⁄▯","⁄","a b⁄c","@mixed"),K("√","√(","³√","³√("),K("x²","²","x³","³"),K("xʸ","^","ʸ√","ʸ√"),K("log","log(","10ˣ","10^("),K("ln","ln(","eˣ","e^(")],
+[K("(−)","−",0,0,"A","A"),K("°′","°","′","′","B","B"),K("hyp","@hyp","Abs","Abs(","C","C"),K("sin","sin(","sin⁻¹","sin⁻¹(","D","D"),K("cos","cos(","cos⁻¹","cos⁻¹(","E","E"),K("tan","tan(","tan⁻¹","tan⁻¹(","F","F")],
+[K("RCL","@rcl","STO","@sto"),K("ENG","@eng","←","@engb"),K("(","(","%","%"),K(")",")",",",",","X","X"),K("S⇔D","@sd",0,0,"Y","Y"),K("M+","@mplus","M−","@mminus","M","M")],
+[K("7","7","CONST","@const"),K("8","8"),K("9","9","CLR","@clr"),K("DEL","@del","INS","@ins",0,0,"d"),K("AC","@ac","OFF","@on",0,0,"d")],
+[K("4","4"),K("5","5"),K("6","6"),K("×","×","nPr","nPr"),K("÷","÷","nCr","nCr")],
+[K("1","1"),K("2","2"),K("3","3"),K("+","+","Pol","Pol("),K("−","−","Rec","Rec(")],
+[K("0","0","Rnd","Rnd("),K(".",".","Ran#","Ran#","RanInt","RanInt("),K("×10ˣ","×10^(","π","π","e","e"),K("Ans","Ans","DRG▸","@drg"),K("=","@eq",0,0,0,0,"y")]];
+const exec=a=>a[0]==="@"?A[a.slice(1)]():ins(a);
+let hv=0;A.hist=()=>{hv=!hv};
+$("hp").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.c){hist=[];hi=-1}else{ex=hist[+b.dataset.i];pos=ex.length;fresh=0;res=null;lab="";hv=0}show()};
+let snd=0,ac;
+function click(){if(!snd)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();const t=ac.currentTime,n=ac.sampleRate*.035|0,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n)**3;
+ const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain(),o=ac.createOscillator(),h=ac.createGain();
+ s.buffer=b;f.type="bandpass";f.frequency.value=2400;g.gain.value=.6;s.connect(f).connect(g).connect(ac.destination);
+ o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(70,t+.04);h.gain.setValueAtTime(.25,t);h.gain.exponentialRampToValueAtTime(.001,t+.05);o.connect(h).connect(ac.destination);
+ s.start(t);o.start(t);o.stop(t+.06)}catch(e){}}
+$("snd").onclick=()=>{snd=!snd;$("snd").classList.toggle("on",!!snd);$("snd").setAttribute("aria-checked",snd?"true":"false");click()};
+function press(k){click();
+ msg="";
+ if(pend==="const"){if(/^\d$/.test(k.a)){cb+=k.a;if(cb.length===2){const c=C[+cb-1];pend=null;cb="";if(c)ins("("+toE(c[1])+")")}}else{pend=null;cb=""}sh=al=0;return show()}
+ if(pend){const l=k.aa&&k.aa.length===1&&VARS.includes(k.aa)?k.aa:null;
+  if(l){pend==="sto"?V[l]=V.Ans:ins(l)}pend=null;sh=al=0;return show()}
+ const a=sh?k.sa:al?k.aa:k.a;
+ if(!a){sh=al=0;return show()}
+ if(a!=="@shift"&&a!=="@alpha")sh=al=0;
+ exec(a);show()}
+const pad=$("pad"),pb={};
+ROWS.forEach(r=>{const d=document.createElement("div");d.className="row"+(r.length===5&&/\d/.test(r[0].l)||r[0].l==="7"?" n":"")+(r[0].l==="SHIFT"?" t":"");
+ d.style.gridTemplateColumns=r[0].l==="SHIFT"?"1fr 1fr 1.5fr 1fr 1fr":`repeat(${r.length},1fr)`;
+ r.forEach(k=>{const c=document.createElement("div");c.className="c";if(k.g)c.style.gridArea=k.g;
+  if(k.l==="DPAD"){c.className="c dp";[["▴","@up","u"],["◂","@left","l"],["▸","@right","r"],["▾","@down","v"]].forEach(([s,a,q])=>{const x=document.createElement("button");x.textContent=s;x.className="b "+q;x.onclick=()=>press(K(s,a));c.appendChild(x)});d.appendChild(c);return}
+  c.innerHTML=`<div class="lb"><span class="s">${k.sl||""}</span><span class="a">${k.al||""}</span></div>`;
+  const b=document.createElement("button");b.innerHTML=k.l;
+  b.className=k.c||(/^[\d.]$/.test(k.l)?"n":/^[×÷+−]$/.test(k.l)?"o":"");
+  if(/^[\d.]$/.test(k.l))b.className="n";if(/^[×÷+−]$/.test(k.l))b.className="o";if(k.l==="(−)")b.className="n";
+  b.onclick=()=>press(k);if(k.c==="sp")c.style.visibility="hidden";c.appendChild(b);d.appendChild(c);pb[k.l]=b});pad.appendChild(d)});
+$("ov").innerHTML=C.map((c,i)=>`<span><b>${String(i+1).padStart(2,"0")}</b> ${c[0]}</span>`).join("");
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function show(){
+ const S=[mode.toUpperCase(),sh?"S":"",al?"A":"",V.M?"M":"",ov?"OVR":"",hyp?"hyp":"",pend==="sto"?"STO▸":pend==="rcl"?"RCL▸":pend==="const"?"CONST "+cb:"",pm?pm.vars[pm.i]+"=?":""].filter(Boolean);
+ $("st").innerHTML=S.map(x=>`<b>${x}</b>`).join("");
+ $("ex").innerHTML=esc(ex.slice(0,pos))+'<i class="cur"></i>'+esc(ex.slice(pos));
+ $("ex").scrollLeft=$("ex").scrollWidth;
+ let t="";if(res!==null)t=lab+(engK!==null?dpl(res/10**(3*engK))+"×10^("+3*engK+")":(!dec&&exact(res))||dpl(res));
+ $("rs").className="rs"+(msg?" err":"");$("rs").textContent=msg||t;
+ $("ov").className="ov"+(pend==="const"?" on":"");const L=$("rs").parentNode;$("ov").style.top=L.offsetTop+L.offsetHeight-19+"px";
+ pb.SHIFT.classList.toggle("on",!!sh);pb.ALPHA.classList.toggle("on",!!al);pb.HIST.classList.toggle("on",!!hv);
+ const hp=$("hp");hp.className="hp"+(hv?" on":"");
+ if(hv){hp.style.top=pb.CALC.parentNode.offsetTop+20+"px";hp.innerHTML=`<h2>History<button class="hc" data-c="1">Clear</button></h2>`+(hist.length?hist.map((e,i)=>{let r;try{const v=run(e);r="= "+(exact(v)||dpl(v))}catch{r="—"}return`<button data-i="${i}"><span>${esc(e)}</span><b>${esc(r)}</b></button>`}).join(""):"<p>No calculations yet.</p>")}}
+document.addEventListener("keydown",e=>{
+ const m={Enter:"@eq","=":"@eq",Backspace:"@del",Escape:"@ac",ArrowLeft:"@left",ArrowRight:"@right",ArrowUp:"@up",ArrowDown:"@down","-":"−","*":"×","/":"÷"};
+ const a=m[e.key]||(/^[0-9.()+^!%,]$/.test(e.key)?e.key:null);if(!a)return;e.preventDefault();click();
+ if(pend||pm&&false){}
+ msg="";sh=al=0;
+ if(pend==="const"){if(/^\d$/.test(a)){cb+=a;if(cb.length===2){const c=C[+cb-1];pend=null;cb="";if(c)ins("("+toE(c[1])+")")}}else{pend=null;cb=""}return show()}
+ exec(a);show()});
+show();
+</script></body></html>
